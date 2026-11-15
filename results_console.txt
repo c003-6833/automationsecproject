@@ -1,0 +1,59 @@
+[data] 11430 rows loaded, 1 duplicate/invalid removed -> 11429 kept
+[data] class balance:
+status
+legitimate    5715
+phishing      5714
+
+================ Random split (80/20) ================
+train = 9143  test = 2286
+Random Forest        | Lexical only          | acc=0.8605 prec=0.8595 rec=0.8618 f1=0.8606
+Logistic Regression  | Lexical only          | acc=0.7568 prec=0.7777 rec=0.7192 f1=0.7473
+Random Forest        | Lexical + domain age  | acc=0.9125 prec=0.9111 rec=0.9143 f1=0.9127
+Logistic Regression  | Lexical + domain age  | acc=0.8088 prec=0.8203 rec=0.7909 f1=0.8053
+Blacklist baseline   | Known-host list       | acc=0.7122 prec=0.9655 rec=0.4401 f1=0.6046
+
+[cross-validation, 5-fold, training set only, accuracy]
+Random Forest        mean=0.9116 std=0.0036  folds=[0.9114 0.9114 0.9054 0.9136 0.9163]
+Logistic Regression  mean=0.8117 std=0.0053  folds=[0.8141 0.8092 0.8152 0.8025 0.8173]
+
+================ Domain-level split (unseen domains) ================
+train = 9300  test = 2129
+Random Forest        | Lexical only          | acc=0.8389 prec=0.8200 rec=0.8542 f1=0.8367
+Logistic Regression  | Lexical only          | acc=0.7811 prec=0.8232 rec=0.6968 f1=0.7547
+Random Forest        | Lexical + domain age  | acc=0.9103 prec=0.9021 rec=0.9135 f1=0.9078
+Logistic Regression  | Lexical + domain age  | acc=0.8257 prec=0.8623 rec=0.7609 f1=0.8085
+Blacklist baseline   | Known-host list       | acc=0.5167 prec=0.0000 rec=0.0000 f1=0.0000
+
+[confusion matrix: Random Forest, random split]
+TN=1041 FP=102 FN=98 TP=1045
+
+[feature importance, top 10]
+                   impurity_importance  permutation_importance
+domain_age_days                 0.2330                  0.1449
+num_digits                      0.1034                  0.0538
+url_length                      0.0999                  0.0041
+path_length                     0.0982                  0.0573
+hostname_length                 0.0896                  0.0077
+num_subdomains                  0.0710                  0.0692
+num_slashes                     0.0676                  0.0412
+num_hyphens                     0.0582                  0.0180
+num_dots                        0.0579                  0.0218
+num_special_chars               0.0539                  0.0032
+
+[sample false positives (legitimate flagged as phishing)]
+   http://www.cubaverdad.net/internet_access.htm
+   http://www.homeandlearn.co.uk/NET/nets4p10.html
+   http://iwanarif.lecturer.pens.ac.id/2.%20network%20protocols.pdf
+   http://ateamasbestos.com.au
+   https://mealpal.co.uk/
+[sample false negatives (phishing missed)]
+   http://bolkyaresha.in
+   http://www.mazzoli.com/stand/otp.php
+   http://nw-industries.co.id/wps/cp_webmail
+   http://ns.act-secure.com/icons/redirect.htm
+   http://micro-sales.co.uk/cf.htm
+
+[median domain age in days, known records only]
+status
+legitimate    6244.0
+phishing      3573.0
